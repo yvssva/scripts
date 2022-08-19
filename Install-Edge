@@ -1,0 +1,14 @@
+$Servers = Get-content "R:\Utils\yves\servers.txt"
+$Folder= "R:\Utils\yves\MicrosoftEdgeEnterpriseX64.msi"
+
+Foreach ($Server in $Servers) {
+$Test = Test-Path -path "\\$Server\c$\Temp\"
+
+If ($Test -eq $True) {Write-Host "Path exists, hence installing softwares on $Server."}
+
+Else {(Write-Host "Path doesnt exists, hence Creating foldet on $Server and starting installation") , (New-Item -ItemType Directory -Name Temp -Path "\\$Server\c$")}
+Echo "Copying Files to C:\Temp\"
+Copy-Item $Folder "\\$Server\c$\Temp\"
+echo "Second Part :- Installing Software on $Server"
+Invoke-Command -computername $Server -ScriptBlock {(Start-Process "msiexec" -ArgumentList "/i C:\Temp\MicrosoftEdgeEnterpriseX64.msi /quiet /norestart" -Wait -Passthru).ExitCode}
+}
