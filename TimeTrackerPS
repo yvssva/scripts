@@ -1,0 +1,19 @@
+$startTime = Get-Date
+$times = @()
+
+Write-Host "Cronômetro iniciado, pressione F9 para gravar o tempo ou Enter para parar..."
+
+while ($true) {
+  $key = [System.Console]::ReadKey().Key
+  if ($key -eq 'Enter') {
+    break
+  }
+  if ($key -eq 'F9') {
+    $currentTime = Get-Date
+    $elapsedTime = $currentTime - $startTime
+    $times += $elapsedTime.TotalSeconds
+    Write-Host "Tempo gravado: $($elapsedTime.TotalSeconds) segundos"
+  }
+}
+
+Write-Host "Tempos gravados: $times segundos"
